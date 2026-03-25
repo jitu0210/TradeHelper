@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import cors from "cors"
 
 // import authRoutes from "./routes/auth.routes.js"
+import calculatorRoutes from "./routes/calculator.routes.js"
 
 dotenv.config()
 
@@ -18,6 +19,7 @@ const port = process.env.PORT || 8000;
 
 
 // app.use("/api/v1/users",authRoutes)
+app.use("/api/v1/calculator",calculatorRoutes)
 
 
 app.listen(port, () =>{

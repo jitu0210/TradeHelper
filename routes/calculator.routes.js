@@ -1,9 +1,10 @@
-const express = require("express");
-const router = express.Router();
-const controller = require("../controllers/calculator.controller");
+import express from "express"
+import { getRiskReward, getWinRate, getPositionSize } from "../controllers/calculator.controller.js";
 
-router.post("/risk-reward", controller.getRiskReward);
-router.post("/win-rate", controller.getWinRate);
-router.post("/position-size", controller.getPositionSize);
+const router = express.Router()
 
-module.exports = router;
+router.post("/risk-reward", getRiskReward);
+router.post("/win-rate", getWinRate);
+router.post("/position-size", getPositionSize);
+
+export default router

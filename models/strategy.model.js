@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const conditionSchema = new mongoose.Schema({
   indicator: String,
@@ -19,4 +19,4 @@ const strategySchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-module.exports = mongoose.model("Strategy", strategySchema);
+const Strategy = mongoose.model("Strategy", strategySchema);

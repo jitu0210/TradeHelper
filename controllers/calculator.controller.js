@@ -1,29 +1,37 @@
-const {
-  calculateRR,
-  calculateWinRate,
-  positionSize
-} = require("../utils/trading");
-
-exports.getRiskReward = (req, res) => {
+const getRiskReward = (req, res) => {
   try {
     const { entry, stopLoss, target } = req.body;
 
-    if (!entry || !stopLoss || !target) {
+    if (entry == null || stopLoss == null || target == null) {
       return res.status(400).json({
         success: false,
-        message: "All fields are required"
+        message: "Entry, StopLoss and Target are required"
       });
     }
 
-    const result = calculateRR(
-      Number(entry),
-      Number(stopLoss),
-      Number(target)
-    );
+    const e = Number(entry);
+    const sl = Number(stopLoss);
+    const t = Number(target);
+
+    const risk = e - sl;
+    const reward = t - e;
+
+    if (risk <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid StopLoss (risk must be > 0)"
+      });
+    }
+
+    const rr = (reward / risk).toFixed(2);
 
     return res.status(200).json({
       success: true,
-      data: result
+      data: {
+        risk,
+        reward,
+        rr
+      }
     });
 
   } catch (error) {
@@ -35,7 +43,8 @@ exports.getRiskReward = (req, res) => {
 };
 
 
-exports.getWinRate = (req, res) => {
+
+const getWinRate = (req, res) => {
   try {
     const { wins, losses } = req.body;
 
@@ -46,47 +55,24 @@ exports.getWinRate = (req, res) => {
       });
     }
 
-    const result = calculateWinRate(
-      Number(wins),
-      Number(losses)
-    );
+    const w = Number(wins);
+    const l = Number(losses);
 
-    return res.status(200).json({
-      success: true,
-      data: {
-        winRate: result
-      }
-    });
+    const total = w + l;
 
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message
-    });
-  }
-};
-
-exports.getPositionSize = (req, res) => {
-  try {
-    const { capital, riskPercent, stopLoss } = req.body;
-
-    if (!capital || !riskPercent || !stopLoss) {
+    if (total === 0) {
       return res.status(400).json({
         success: false,
-        message: "All fields are required"
+        message: "Total trades cannot be zero"
       });
     }
 
-    const result = positionSize(
-      Number(capital),
-      Number(riskPercent),
-      Number(stopLoss)
-    );
+    const winRate = ((w / total) * 100).toFixed(2);
 
     return res.status(200).json({
       success: true,
       data: {
-        quantity: result
+        winRate
       }
     });
 
@@ -97,3 +83,51 @@ exports.getPositionSize = (req, res) => {
     });
   }
 };
+
+
+const getPositionSize = (req, res) => {
+  try {
+    const { capital, riskPercent, stopLoss } = req.body;
+
+    if (capital == null || riskPercent == null || stopLoss == null) {
+      return res.status(400).json({
+        success: false,
+        message: "Capital, Risk % and StopLoss are required"
+      });
+    }
+
+    const cap = Number(capital);
+    const riskP = Number(riskPercent);
+    const sl = Number(stopLoss);
+
+    if (sl <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "StopLoss must be > 0"
+      });
+    }
+
+    const riskAmount = cap * (riskP / 100);
+    const quantity = Math.floor(riskAmount / sl);
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        riskAmount,
+        quantity
+      }
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+export {
+    getRiskReward,
+    getWinRate,
+    getPositionSize
+}
