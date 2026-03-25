@@ -20,3 +20,5 @@ const strategySchema = new mongoose.Schema(
 );
 
 const Strategy = mongoose.model("Strategy", strategySchema);
+
+export default Strategy;
