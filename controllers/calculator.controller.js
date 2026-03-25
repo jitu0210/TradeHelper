@@ -84,7 +84,6 @@ const getWinRate = (req, res) => {
   }
 };
 
-
 const getPositionSize = (req, res) => {
   try {
     const { capital, riskPercent, stopLoss } = req.body;

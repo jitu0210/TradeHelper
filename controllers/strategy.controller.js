@@ -1,6 +1,6 @@
 import Strategy from "../models/strategy.model.js"
 
-exports.createStrategy = async (req, res) => {
+const createStrategy = async (req, res) => {
   try {
     const { name, conditions, stopLoss, target } = req.body;
 
@@ -33,7 +33,7 @@ exports.createStrategy = async (req, res) => {
   }
 };
 
-exports.getStrategies = async (req, res) => {
+const getStrategies = async (req, res) => {
   try {
     const strategies = await Strategy.find();
 
@@ -50,7 +50,7 @@ exports.getStrategies = async (req, res) => {
   }
 };
 
-exports.getStrategyById = async (req, res) => {
+const getStrategyById = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -77,7 +77,7 @@ exports.getStrategyById = async (req, res) => {
 };
 
 
-exports.deleteStrategy = async (req, res) => {
+const deleteStrategy = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -95,3 +95,11 @@ exports.deleteStrategy = async (req, res) => {
     });
   }
 };
+
+
+export {
+    createStrategy,
+    getStrategies,
+    getStrategyById,
+    deleteStrategy
+}
