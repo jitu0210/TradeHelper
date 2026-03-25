@@ -1,7 +1,7 @@
 import express from "express"
 import dotenv from "dotenv"
 import cors from "cors"
-
+//routes
 import authRoutes from "./routes/auth.routes.js"
 import calculatorRoutes from "./routes/calculator.routes.js"
 import strategyRoutes from "./routes/strategy.routes.js"
@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const port = process.env.PORT || 8000;
 
-
+//routes
 app.use("/api/v1/auth",authRoutes)
 app.use("/api/v1/calculator",calculatorRoutes)
 app.use("/api/v1/strategy",strategyRoutes)
