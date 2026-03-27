@@ -5,6 +5,7 @@ import cors from "cors"
 import authRoutes from "./routes/auth.routes.js"
 import calculatorRoutes from "./routes/calculator.routes.js"
 import strategyRoutes from "./routes/strategy.routes.js"
+import supportResistanceRoutes from "./routes/supportResistance.routes.js"
 
 dotenv.config()
 
@@ -22,6 +23,7 @@ const port = process.env.PORT || 8000;
 app.use("/api/v1/auth",authRoutes)
 app.use("/api/v1/calculator",calculatorRoutes)
 app.use("/api/v1/strategy",strategyRoutes)
+app.use("/api/v1/sr",supportResistanceRoutes)
 
 
 app.listen(port, () =>{
